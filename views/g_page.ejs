@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('partials/header') %>
+  </head>
+
+  <body class="bg-dark">
+    <%- include('partials/navigation') %>
+
+    <header
+    class="container d-flex justify-content-center align-items-center vh-50"
+  >
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <h2 class="fw-bold text-white">Details of your appointment (G Full)</h2>
+    </div>
+  </header>
+
+
+    <div class="container">
+      <div class="row">
+        <% if(user?.licenseNumber) { %>
+
+        <div class="card border-0 shadow rounded-3 my-5 col-sm-5 col-md-5">
+          <div class="card-body p-4 p-sm-5">
+            <h4 class="card-header text-center mb-5 fw-light fs-8">
+              Personal Information
+            </h4>
+
+            <h5 class="card-title mb-5 fw-light fs-5">
+              <b>Name: </b><%= user?.firstName %> <%= user?.lastName %>
+            </h5>
+            <h5 class="card-title mb-5 fw-light fs-5">
+              <b>license Number:: </b><%= user?.licenseNumber %>
+            </h5>
+            <h5 class="card-title mb-5 fw-light fs-5">
+              <b>Age: </b><%= user?.Age %>
+            </h5>
+
+            <h5 class="card-title mb-5 fw-light fs-5">
+              <b>Date: </b><%= user?.timeSlot.slotDate %>
+            </h5>
+
+            <h5 class="card-title mb-5 fw-light fs-5">
+              <b>Hour: </b><%= user?.timeSlot.slotTime %>
+            </h5>
+          </div>
+        </div>
+
+        <div class="col-sm-2 col-md-2"></div>
+
+        <div class="card border-0 shadow rounded-3 my-5 col-sm-5 col-md-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-header text-center mb-5 fw-light fs-8">
+              Car Information
+            </h5>
+
+            <form action="/g_page_confirm" method="post">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  id="txtLicenseNumber"
+                  value="<%= user?.carDetail?.make %>"
+                  name="txtMake"
+                  class="form-control"
+                />
+                <label>Make</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  id="txtLicenseNumber"
+                  value="<%= user?.carDetail?.model %>"
+                  name="txtModel"
+                  class="form-control"
+                />
+                <label>Model</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  id="txtLicenseNumber"
+                  value="<%= user?.carDetail?.year %>"
+                  name="txtYear"
+                  class="form-control"
+                />
+                <label>Year</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  id="txtLicenseNumber"
+                  value="<%= user?.carDetail?.platno %>"
+                  name="txtPlatNumber"
+                  class="form-control"
+                />
+                <label>Plate number</label>
+              </div>
+
+              <% if(locals.updated) { %>
+              <div class="p-3 mb-2 bg-primary text-white">
+                <h3 class="card-title text-center fw-light fs-5">
+                  <b>Appointment confirmed successfully</b>
+                </h3>
+              </div>
+              <% }else{ %>
+
+              <div class="d-grid">
+                <button
+                  class="btn btn-primary btn-login text-uppercase fw-bold"
+                  type="submit"
+                >
+                  Confirm
+                </button>
+              </div>
+
+              <% } %>
+            </form>
+          </div>
+        </div>
+
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>

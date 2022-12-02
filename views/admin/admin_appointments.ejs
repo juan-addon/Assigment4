@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('../partials/header') %>
+
+    <style>
+      .checked {
+        background-color: #6c757d;
+        color: aliceblue;
+        border-color: "#6c757d";
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('../partials/navigation') %>
+
+    <form id="appointmen" action="/SaveAppointmentSlot" method="post">
+      <div class="container">
+        <div class="row">
+          <% if(locals.error) { %>
+          <div class="p-3 text-white mx-auto">
+            <div
+              class="col-sm-9 col-md-7 col-lg-5 mx-auto bg-danger card border-0 shadow rounded-3 my-5"
+            >
+              <h3 class="card-title text-center fw-light fs-5">
+                <b><%= error %></b>
+              </h3>
+            </div>
+          </div>
+          <% } %>
+
+          <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+              <div class="card-body p-4 p-sm-5">
+                <div class="row">
+                  <div class="form-floating mb-3">
+                    <input
+                      type="date"
+                      name="txtDate"
+                      id="txtDate"
+                      class="form-control"
+                      value="<%=(new Date()).toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>"
+                      required
+                      pattern="\d{4}-\d{2}-\d{2}"
+                    />
+                    <label
+                      for="floatingPassword"
+                      style="margin: 0px 0px 0px 10px"
+                    >
+                      Date</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+              <div class="card-body p-4 p-sm-5">
+                <div class="row" id="SlotsItems"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-9 col-md-7 col-lg-8 mx-auto">
+            <div class="d-grid p-4">
+              <button
+                class="btn btn-primary btn-login text-uppercase fw-bold"
+                type="submit"
+              >
+                Save Slot
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
+
+<%- include('../partials/scripts') %>
+
+<script>
+  $(function () {
+    $("#txtDate").change();
+  });
+
+  $("#txtDate").on("change", async function () {
+    await changeDropdownDataSet(this.value);
+  });
+
+  const changeDropdownDataSet = async (InputDate) => {
+    let serverSourceLink = "/GetSlotAvailable";
+    console.log(InputDate);
+
+    let sourceOptions = '<option value="">Select ServerUrl...</option>';
+    $.ajax({
+      type: "POST",
+      url: serverSourceLink,
+      data: JSON.stringify({ InputDate: InputDate }),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data, status) {
+        var i = 1;
+        $("#SlotsItems").empty();
+        for (let sources of data) {
+          var slotStatus = sources.Available ? "" : "disabled";
+          var slotColorStatus = sources.Available
+            ? "btn btn-outline-success"
+            : "btn btn-outline-secondary checked";
+
+          $("#SlotsItems").append(`
+          <div class="col-lg-3 p-4" id="${sources.Slot}">
+                <input
+                    type="checkbox"
+                    class="btn-check"
+                    name="slot${i}"
+                    value="${sources.Slot}"
+                    id="btn-check${i}-outlined"
+                    autocomplete="off"
+                    ${slotStatus}
+                />
+                <label
+                    style="width: 150px"
+                    class="${slotColorStatus}"
+                    for="btn-check${i}-outlined"
+                    > ${sources.Slot} </label>
+            </div>
+          `);
+
+          i++;
+        }
+      },
+      error: function (error) {
+        jsonValue = jQuery.parseJSON(error.responseText);
+        alert("error" + error.responseText);
+      },
+    });
+
+    //$("#IntegrationProviderSourceId").empty().append(sourceOptions);
+  };
+</script>

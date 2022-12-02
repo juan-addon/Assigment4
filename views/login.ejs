@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('partials/header') %>
+  </head>
+
+  <body>
+    <%- include('partials/navigation') %>
+
+    <div class="container">
+      <div class="row">
+        <% if(locals.error) { %>
+        <div class="p-3 text-white mx-auto">
+          <div
+            class="col-sm-9 col-md-7 col-lg-5 mx-auto bg-danger card border-0 shadow rounded-3 my-5"
+          >
+            <h3 class="card-title text-center fw-light fs-5">
+              <b><%= error %></b>
+            </h3>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+              <h5 class="card-title text-center mb-5 fw-light fs-5">Sign Up</h5>
+              <form id="msform" action="/sign_up" method="post">
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    name="txtUserName"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                    required
+                  />
+                  <label for="floatingInput">User Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    type="password"
+                    name="txtPassword"
+                    class="form-control"
+                    id="floatingPassword"
+                    placeholder="Password"
+                    required
+                  />
+                  <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    type="password"
+                    name="txtConfirmPassword"
+                    class="form-control"
+                    id="floatingPassword"
+                    placeholder="Password"
+                    required
+                  />
+                  <label for="floatingPassword">Confirm Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-control" name="txtUserType" required>
+                    <option>Driver</option>
+                    <option>Examiner</option>
+                    <option>Admin</option>
+                  </select>
+                  <label for="floatingInput">User Type</label>
+                </div>
+
+                <div class="d-grid">
+                  <button
+                    class="btn btn-primary btn-login text-uppercase fw-bold"
+                    type="submit"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+              <h5 class="card-title text-center mb-5 fw-light fs-5">Login</h5>
+              <form id="msLoginForm" action="/loginIn" method="post">
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    name="txtUser"
+                    class="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                    required
+                  />
+                  <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input
+                    type="password"
+                    name="txtPassword"
+                    class="form-control"
+                    id="floatingPassword"
+                    placeholder="Password"
+                    required
+                  />
+                  <label for="floatingPassword">Password</label>
+                </div>
+
+                <div class="d-grid">
+                  <button
+                    class="btn btn-primary btn-login text-uppercase fw-bold"
+                    type="submit"
+                  >
+                    Sign in
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

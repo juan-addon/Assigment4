@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <%- include('partials/header') %>
+  </head>
+  <body class="bg-dark">
+    <%- include('partials/navigation') %>
+
+    <!-- MultiStep Form -->
+    <div class="container-fluid" id="grad1">
+      <div class="row justify-content-center mt-0">
+        <div
+          class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2"
+        >
+          <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+            <h2><strong>Sign Up for your Exam</strong></h2>
+            <p>Fill all form field to go to next step</p>
+            <div class="row">
+              <div class="col-md-12 mx-0">
+                <form id="msform" action="/g2_page" method="post">
+                  <!-- progressbar -->
+                  <ul id="progressbar">
+                    <li class="active" id="account">
+                      <strong>Personal Information</strong>
+                    </li>
+                    <li id="personal">
+                      <strong> Car Information and Time Slot</strong>
+                    </li>
+                  </ul>
+                  <!-- fieldsets -->
+                  <fieldset>
+                    <div class="form-card">
+                      <h2 class="fs-title">Personal Information</h2>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          value="<%= user?.firstName %>"
+                          name="txtFirstName"
+                          placeholder="First Name"
+                        />
+                        <label for="floatingInput">First Name</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="txtLastName"
+                          value="<%= user?.lastName %>"
+                          placeholder="Last Name"
+                        />
+                        <label for="floatingInput">Last Name</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="txtLicenseNumber"
+                          value="<%= user?.licenseNumber %>"
+                          placeholder="License Number"
+                        />
+                        <label for="floatingInput">License Number</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="number"
+                          class="form-control"
+                          name="txtAge"
+                          value="<%= user?.Age %>"
+                          placeholder="Age"
+                          min="16"
+                          max="80"
+                        />
+                        <label for="floatingInput">Age</label>
+                      </div>
+                    </div>
+                    <input
+                      type="button"
+                      name="next"
+                      class="btn btn-primary btn-login text-uppercase fw-bold next action-button"
+                      value="Next Step"
+                    />
+                  </fieldset>
+                  <fieldset>
+                    <div class="form-card">
+                      <h2 class="fs-title">Car Information</h2>
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="txtMake"
+                          value="<%= user?.carDetail?.make %>"
+                          placeholder="Make"
+                        />
+                        <label for="floatingInput">Make</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="txtModel"
+                          value="<%= user?.carDetail?.model %>"
+                          placeholder="Model"
+                        />
+                        <label for="floatingInput">Model</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="number"
+                          class="form-control"
+                          name="txtYear"
+                          value="<%= user?.carDetail?.year %>"
+                          placeholder="Year"
+                        />
+                        <label for="floatingInput">Year</label>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="txtPlatNumber"
+                          value="<%= user?.carDetail?.platno %>"
+                          placeholder="Plate number"
+                        />
+                        <label for="floatingInput">Plate number</label>
+                      </div>
+                    </div>
+
+                    <div class="form-card">
+
+                      <% if(user?.timeSlot?.slotTime == "") { %>
+                        <h2 class="fs-title">Time Slot</h2>
+                        <div class="form-floating mb-3">
+                          <input
+                            type="date"
+                            name="txtDate"
+                            id="txtDate"
+                            class="form-control"
+                            value="<%=(new Date()).toLocaleDateString('fr-CA', { year: 'numeric', month: '2-digit', day: '2-digit' })%>"
+                            required
+                            pattern="\d{4}-\d{2}-\d{2}"
+                          />
+                          <label
+                            for="floatingPassword"
+                            style="margin: 0px 0px 0px 10px"
+                          >
+                            Date</label
+                          >
+                        </div>
+                        <br />
+                        <br />
+                      <% } else{ %>
+                        <h2 class="fs-title">Date selected</h2>
+                        <div class="form-floating mb-3">
+                          
+                          <h5><%=user?.timeSlot?.slotDate %></h5>
+                        </div>
+                        <br />
+                        <br />
+                      <% }  %>
+
+                      
+                      <% if(user?.timeSlot?.slotTime == "") { %>
+                        <h2 class="fs-title">Availability</h2>
+                        <div class="row" id="SlotsItems"></div>
+                      <% } else{ %>
+                        <h2 class="fs-title">Time selected</h2>
+                        <input type="radio" class="btn-check" checked name="slot" id="success-outlined" autocomplete="off" disabled>
+                        <label  style="width: 150px" class="btn btn-outline-success" for="success-outlined"><%=user?.timeSlot?.slotTime %></label>
+                      <% }  %>
+                    </div>
+                    <input
+                      type="button"
+                      name="previous"
+                      class="btn btn-primary btn-login text-uppercase fw-bold next previous action-button-previous"
+                      value="Previous"
+                    />
+
+                    <% if(user?.timeSlot?.slotTime == "") { %>
+                      <input
+                        type="submit"
+                        class="btn btn-primary btn-login text-uppercase fw-bold action-button"
+                        value="submit"
+                      />
+                    <% } %>
+
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<%- include('partials/scripts') %>
+
+<script>
+  $(function () {
+    $("#txtDate").change();
+  });
+
+  $("#txtDate").on("change", async function () {
+    await changeDropdownDataSet(this.value);
+  });
+
+  const changeDropdownDataSet = async (InputDate) => {
+    let serverSourceLink = "/GetSlotAvailableForDriver";
+    console.log(InputDate);
+
+    let sourceOptions = '<option value="">Select ServerUrl...</option>';
+    $.ajax({
+      type: "POST",
+      url: serverSourceLink,
+      data: JSON.stringify({ InputDate: InputDate }),
+      contentType: "application/json",
+      dataType: "json",
+      success: function (data, status) {
+        var i = 1;
+        $("#SlotsItems").empty();
+
+        if (data.length == 0) {
+          $("#SlotsItems").append(`
+          <div class="p-3 mb-2 bg-danger text-white">
+            <h3 class="card-title text-center fw-light fs-5">
+              <b>For the entered date, there is no availability.</b>
+            </h3>
+          </div>`);
+        } else {
+          for (let sources of data) {
+            console.log(data);
+
+            $("#SlotsItems").append(`
+            <div class="col-lg-3 p-4">
+              <input type="radio" class="btn-check" value="${sources._id}" name="slot" id="success-outlined${i}" autocomplete="off">
+              <label  style="width: 150px" class="btn btn-outline-success" for="success-outlined${i}">${sources.Time}</label>
+            </div>
+          `);
+            i++;
+          }
+        }
+      },
+      error: function (error) {
+        jsonValue = jQuery.parseJSON(error.responseText);
+        alert("error" + error.responseText);
+      },
+    });
+  };
+</script>
